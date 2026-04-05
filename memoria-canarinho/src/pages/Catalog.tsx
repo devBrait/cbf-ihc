@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, ChevronDown, ChevronUp, Image as ImageIcon, FileText, Video, Headphones, Box } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, Image as ImageIcon, FileText, Video, Headphones, Box, LayoutGrid, Mic, Filter } from 'lucide-react';
 import { mockItems } from '../data/mockData';
 import type { Category } from '../data/mockData';
 import { Button } from '@/components/ui/button';
@@ -15,16 +15,16 @@ export const Catalog: React.FC = () => {
 
   const [yearFilter, setYearFilter] = useState('');
   const [competitionFilter, setCompetitionFilter] = useState('');
-  
+
   const categories = ['Todas', 'Fotografias', 'Entrevistas', 'Documentos', 'Áudios', 'Objetos 3D', 'Vídeos'];
 
   const filteredItems = mockItems.filter(item => {
     const matchesCategory = selectedCategory === 'Todas' || item.category === selectedCategory;
-    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          item.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesYear = yearFilter === '' || item.year === yearFilter;
     const matchesCompetition = competitionFilter === '' || item.competition?.toLowerCase().includes(competitionFilter.toLowerCase());
-    
+
     return matchesCategory && matchesSearch && matchesYear && matchesCompetition;
   });
 
@@ -35,6 +35,8 @@ export const Catalog: React.FC = () => {
       case 'Vídeos': return <Video aria-hidden="true" className="w-5 h-5" />;
       case 'Documentos': return <FileText aria-hidden="true" className="w-5 h-5" />;
       case 'Objetos 3D': return <Box aria-hidden="true" className="w-5 h-5" />;
+      case 'Todas': return <LayoutGrid aria-hidden="true" className="w-5 h-5" />;
+      case 'Entrevistas': return <Mic aria-hidden="true" className="w-5 h-5" />;
       default: return null;
     }
   };
@@ -64,7 +66,7 @@ export const Catalog: React.FC = () => {
 
       <div className="flex-1">
         <h1 className="text-3xl font-extrabold text-primary mb-6">Explorar Acervo</h1>
-        
+
         <Card className="p-6 mb-8 bg-card shadow-sm border-2">
           <form className="flex flex-col gap-4" onSubmit={e => e.preventDefault()} aria-label="Formulário de Busca">
             <div className="flex flex-col sm:flex-row gap-4">
@@ -96,8 +98,9 @@ export const Catalog: React.FC = () => {
               aria-expanded={isAdvancedSearchOpen}
               aria-controls="advanced-search-panel"
             >
-              {isAdvancedSearchOpen ? <ChevronUp aria-hidden="true" className="mr-2" /> : <ChevronDown aria-hidden="true" className="mr-2" />}
+              <Filter aria-hidden="true" className="mr-2" />
               {isAdvancedSearchOpen ? 'Ocultar Busca Avançada' : 'Mostrar Busca Avançada'}
+              {isAdvancedSearchOpen ? <ChevronUp aria-hidden="true" className="ml-2" /> : <ChevronDown aria-hidden="true" className="ml-2" />}
             </Button>
 
             {isAdvancedSearchOpen && (
@@ -131,14 +134,14 @@ export const Catalog: React.FC = () => {
 
         <section aria-live="polite" aria-atomic="true">
           <h2 className="text-2xl font-bold mb-4 border-b pb-2">
-             Resultados da Busca ({filteredItems.length} encontrado{filteredItems.length !== 1 && 's'})
+            Resultados da Busca ({filteredItems.length} encontrado{filteredItems.length !== 1 && 's'})
           </h2>
-          
+
           {filteredItems.length > 0 ? (
             <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredItems.map(item => (
                 <li key={item.id} className="h-full">
-                  <Link 
+                  <Link
                     to={`/catalog/${item.id}`}
                     className="flex flex-col h-full rounded-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring"
                     aria-label={`Visualizar item: ${item.title}`}
@@ -149,8 +152,8 @@ export const Catalog: React.FC = () => {
                           <img src={item.imageUrl} alt="" className="object-cover w-full h-full" />
                         ) : (
                           <div className="text-muted-foreground flex flex-col items-center">
-                             {getCategoryIcon(item.category)}
-                             <span className="mt-2 font-medium">{item.category}</span>
+                            {getCategoryIcon(item.category)}
+                            <span className="mt-2 font-medium">{item.category}</span>
                           </div>
                         )}
                         <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded shadow">

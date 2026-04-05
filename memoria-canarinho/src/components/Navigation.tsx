@@ -29,7 +29,7 @@ export const Navigation: React.FC<{ children: React.ReactNode }> = ({ children }
             className="text-2xl md:text-3xl font-bold flex items-center gap-2 hover:underline focus:ring-4 focus:ring-canarinho-branco focus:outline-none rounded p-1"
             aria-label="Memória Canarinho, Página Inicial"
           >
-            Memória Canarinho
+            Memória Canarinho 🇧🇷
           </Link>
 
           <nav aria-label="Navegação Principal">
