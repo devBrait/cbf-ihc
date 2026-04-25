@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Play, Pause, FileText, Volume2 } from 'lucide-react';
+import { useTranslation } from '../context/I18nContext';
 
 interface AudioPlayerProps {
   title: string;
@@ -10,6 +11,7 @@ interface AudioPlayerProps {
 export const AudioPlayer: React.FC<AudioPlayerProps> = ({ title, transcription }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { t } = useTranslation();
   
   // Para mock, não usaremos audioUrl real a menos que funcione. Usaremos um estado artificial se for o caso.
   // Como é protótipo UX, focar na clareza visual.
@@ -22,10 +24,10 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ title, transcription }
   };
 
   return (
-    <div className="bg-white border-2 border-slate-200 rounded-lg p-6 shadow-sm mb-8" aria-label={`Reprodutor de áudio: ${title}`}>
+    <div className="bg-white border-2 border-slate-200 rounded-lg p-6 shadow-sm mb-8" aria-label={`${t('audio.controls')}: ${title}`}>
       <h3 className="text-xl font-bold mb-4 text-canarinho-azul-escuro flex items-center gap-2">
         <Volume2 aria-hidden="true" className="w-6 h-6" />
-        Controles de Áudio
+        {t('audio.controls')}
       </h3>
       
       <div className="flex flex-col md:flex-row gap-6 items-start">
@@ -43,12 +45,12 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ title, transcription }
             {isPlaying ? (
               <>
                 <Pause className="w-8 h-8" aria-hidden="true" />
-                Pausar
+                {t('audio.pause')}
               </>
             ) : (
               <>
                 <Play className="w-8 h-8" aria-hidden="true" />
-                Ouvir Áudio
+                {t('audio.play')}
               </>
             )}
           </button>
@@ -56,7 +58,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ title, transcription }
           {isPlaying && (
              <div className="mt-4 p-2 bg-blue-50 border border-blue-200 text-blue-900 text-sm rounded font-medium flex items-center justify-center" aria-live="polite">
                <Volume2 className="w-4 h-4 mr-2 animate-pulse" />
-               Reproduzindo áudio...
+               {t('audio.playing')}
              </div>
           )}
         </div>
@@ -64,12 +66,12 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ title, transcription }
         <div className="flex-1 bg-slate-50 border-2 border-slate-300 rounded p-4 relative w-full">
           <h4 className="flex items-center gap-2 text-lg font-bold text-slate-800 mb-3 border-b pb-2">
             <FileText aria-hidden="true" className="w-5 h-5 text-canarinho-azul-escuro" />
-            Transcrição do Áudio
+            {t('audio.transcription')}
           </h4>
           
           <div 
             className="prose prose-lg text-slate-700 select-text" 
-            aria-label="Texto da transcrição"
+            aria-label={t('audio.transcription')}
             id="transcription-text"
           >
              <p className="leading-relaxed bg-white p-3 rounded border border-slate-200">
@@ -78,7 +80,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ title, transcription }
           </div>
           
           <div className="mt-3 text-sm text-slate-500 italic">
-            Dica: Você pode selecionar e copiar o texto da transcrição.
+            {t('audio.tip')}
           </div>
         </div>
       </div>

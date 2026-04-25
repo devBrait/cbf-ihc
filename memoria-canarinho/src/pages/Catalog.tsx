@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Search, ChevronDown, ChevronUp, Image as ImageIcon, FileText, Video, Headphones, Box, LayoutGrid, Mic, Filter } from 'lucide-react';
-import { mockItems } from '../data/mockData';
+import { getMockItems } from '../data/mockData';
 import type { Category } from '../data/mockData';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardTitle, CardFooter, CardHeader } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { useTranslation } from '../context/I18nContext';
 
 export const Catalog: React.FC = () => {
+  const { t, language } = useTranslation();
+  const mockItems = getMockItems(language);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [isAdvancedSearchOpen, setIsAdvancedSearchOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | 'Todas'>('Todas');
@@ -67,7 +71,7 @@ export const Catalog: React.FC = () => {
     <div className="flex flex-col lg:flex-row gap-8">
       <aside className="w-full lg:w-64 flex-shrink-0" aria-label="Filtro por Categorias">
         <div className="bg-muted border rounded-lg p-4 sticky top-4">
-          <h2 className="text-xl font-bold mb-4 border-b pb-2">Categorias</h2>
+          <h2 className="text-xl font-bold mb-4 border-b pb-2">{t('catalog.categories')}</h2>
           <ul className="flex flex-col gap-2">
             {categories.map(cat => (
               <li key={cat}>
@@ -81,7 +85,7 @@ export const Catalog: React.FC = () => {
                   aria-pressed={selectedCategory === cat}
                 >
                   {getCategoryIcon(cat)}
-                  {cat}
+                  {t(`cat.${cat}`)}
                 </Button>
               </li>
             ))}
@@ -90,14 +94,14 @@ export const Catalog: React.FC = () => {
       </aside>
 
       <div className="flex-1">
-        <h1 className="text-3xl font-extrabold text-primary mb-6">Explorar Acervo</h1>
+        <h1 className="text-3xl font-extrabold text-primary mb-6">{t('catalog.title')}</h1>
 
         <Card className="p-6 mb-8 bg-card shadow-sm border-2">
           <form className="flex flex-col gap-4" onSubmit={e => e.preventDefault()} aria-label="Formulário de Busca">
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1 flex flex-col space-y-2">
                 <Label htmlFor="search-simple" className="text-lg font-bold">
-                  Busca Simples (Título ou Descrição)
+                  {t('catalog.searchTitle')}
                 </Label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -112,7 +116,7 @@ export const Catalog: React.FC = () => {
                       setCurrentPage(1);
                     }}
                     className="pl-12 py-6 text-lg"
-                    placeholder="Digite para buscar..."
+                    placeholder={t('catalog.searchPlaceholder')}
                   />
                 </div>
               </div>
@@ -127,14 +131,14 @@ export const Catalog: React.FC = () => {
               aria-controls="advanced-search-panel"
             >
               <Filter aria-hidden="true" className="mr-2" />
-              {isAdvancedSearchOpen ? 'Ocultar Busca Avançada' : 'Mostrar Busca Avançada'}
+              {isAdvancedSearchOpen ? t('catalog.hideAdvanced') : t('catalog.showAdvanced')}
               {isAdvancedSearchOpen ? <ChevronUp aria-hidden="true" className="ml-2" /> : <ChevronDown aria-hidden="true" className="ml-2" />}
             </Button>
 
             {isAdvancedSearchOpen && (
               <div id="advanced-search-panel" className="bg-muted p-6 rounded-md border mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="filter-year" className="text-lg font-bold">Ano</Label>
+                  <Label htmlFor="filter-year" className="text-lg font-bold">{t('catalog.year')}</Label>
                   <Input
                     id="filter-year"
                     type="text"
@@ -144,11 +148,11 @@ export const Catalog: React.FC = () => {
                       setCurrentPage(1);
                     }}
                     className="py-6 text-lg"
-                    placeholder="Ex: 1970"
+                    placeholder={t('catalog.yearPlaceholder')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="filter-comp" className="text-lg font-bold">Competição</Label>
+                  <Label htmlFor="filter-comp" className="text-lg font-bold">{t('catalog.competition')}</Label>
                   <Input
                     id="filter-comp"
                     type="text"
@@ -158,11 +162,11 @@ export const Catalog: React.FC = () => {
                       setCurrentPage(1);
                     }}
                     className="py-6 text-lg"
-                    placeholder="Ex: Copa do Mundo"
+                    placeholder={t('catalog.compPlaceholder')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="filter-player" className="text-lg font-bold">Jogador</Label>
+                  <Label htmlFor="filter-player" className="text-lg font-bold">{t('catalog.player')}</Label>
                   <Input
                     id="filter-player"
                     type="text"
@@ -172,11 +176,11 @@ export const Catalog: React.FC = () => {
                       setCurrentPage(1);
                     }}
                     className="py-6 text-lg"
-                    placeholder="Ex: Pelé"
+                    placeholder={t('catalog.playerPlaceholder')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="filter-opponent" className="text-lg font-bold">Adversário</Label>
+                  <Label htmlFor="filter-opponent" className="text-lg font-bold">{t('catalog.opponent')}</Label>
                   <Input
                     id="filter-opponent"
                     type="text"
@@ -186,7 +190,7 @@ export const Catalog: React.FC = () => {
                       setCurrentPage(1);
                     }}
                     className="py-6 text-lg"
-                    placeholder="Ex: Itália"
+                    placeholder={t('catalog.oppPlaceholder')}
                   />
                 </div>
               </div>
@@ -196,7 +200,7 @@ export const Catalog: React.FC = () => {
 
         <section aria-live="polite" aria-atomic="true">
           <h2 className="text-2xl font-bold mb-4 border-b pb-2">
-            Resultados da Busca ({filteredItems.length} encontrado{filteredItems.length !== 1 && 's'})
+            {t('catalog.results')} ({filteredItems.length})
           </h2>
 
           {filteredItems.length > 0 ? (
@@ -214,11 +218,11 @@ export const Catalog: React.FC = () => {
                               <div className="[&>svg]:w-12 [&>svg]:h-12 mb-2 text-slate-400">
                                 {getCategoryIcon(item.category)}
                               </div>
-                              <span className="font-medium text-slate-500">{item.category}</span>
+                              <span className="font-medium text-slate-500">{t(`cat.${item.category}`)}</span>
                             </div>
                           )}
                           <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm text-slate-900 text-xs font-bold px-3 py-1.5 rounded shadow-sm border border-slate-200">
-                            {item.category}
+                            {t(`cat.${item.category}`)}
                           </div>
                         </div>
                         <div className="p-5 flex-grow flex flex-col">
@@ -226,11 +230,11 @@ export const Catalog: React.FC = () => {
                             {item.title}
                           </h3>
                           
-                          <div className="mt-auto space-y-1.5 text-sm text-slate-600">
-                            <p>Ano: <strong className="text-slate-900">{item.year}</strong></p>
-                            {item.competition && <p>Competição: <strong className="text-slate-900">{item.competition}</strong></p>}
-                            {item.player && <p>Jogador: <strong className="text-slate-900">{item.player}</strong></p>}
-                            {item.opponent && <p>Adversário: <strong className="text-slate-900">{item.opponent}</strong></p>}
+                          <div className="mt-4 space-y-1.5 text-sm text-slate-600">
+                            <p>{t('catalog.year')}: <strong className="text-slate-900">{item.year}</strong></p>
+                            {item.competition && <p>{t('catalog.competition')}: <strong className="text-slate-900">{item.competition}</strong></p>}
+                            {item.player && <p>{t('catalog.player')}: <strong className="text-slate-900">{item.player}</strong></p>}
+                            {item.opponent && <p>{t('catalog.opponent')}: <strong className="text-slate-900">{item.opponent}</strong></p>}
                           </div>
                         </div>
                       </Card>
@@ -248,10 +252,10 @@ export const Catalog: React.FC = () => {
                     aria-label="Página Anterior"
                     className="font-bold border-2"
                   >
-                    Anterior
+                    {t('catalog.previous')}
                   </Button>
                   <span className="text-lg font-bold" aria-live="polite">
-                    Página {currentPage} de {totalPages}
+                    {t('catalog.pageOf', currentPage.toString(), totalPages.toString())}
                   </span>
                   <Button
                     variant="outline"
@@ -260,14 +264,14 @@ export const Catalog: React.FC = () => {
                     aria-label="Próxima Página"
                     className="font-bold border-2"
                   >
-                    Próxima
+                    {t('catalog.next')}
                   </Button>
                 </div>
               )}
             </>
           ) : (
             <Card className="p-8 text-center bg-muted">
-              <p className="text-xl text-muted-foreground">Nenhum item encontrado com os filtros atuais.</p>
+              <p className="text-xl text-muted-foreground">{t('catalog.notFound')}</p>
             </Card>
           )}
         </section>

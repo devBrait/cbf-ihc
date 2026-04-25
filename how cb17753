@@ -1,0 +1,10 @@
+[33mcb17753[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge pull request #2 from devBrait/revert-1-Guilherme
+[33m816bb11[m Revert "V1 - Centro de Memória Digital CBF"
+[33m9698fc1[m Merge pull request #1 from devBrait/Guilherme
+[33m33ead54[m[33m ([m[1;31morigin/Guilherme[m[33m)[m V1 - Centro de Memória Digital CBF
+[33md51e8ae[m fix: change icon for all browsers
+[33me9eee1d[m feat: new icons
+[33m9e79638[m chore: update node version for deploy
+[33m403b1cb[m Configs para deploy no GitHub Pages
+[33m1a59ba1[m Fix: remove submodule and add project as normal folder
+[33mef901ae[m first commit
