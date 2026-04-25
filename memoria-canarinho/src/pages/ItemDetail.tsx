@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCollection } from '../context/CollectionContext';
 import { mockItems } from '../data/mockData';
 import { AudioPlayer } from '../components/AudioPlayer';
-import { ArrowLeft, Star, FileText } from 'lucide-react';
+import { ArrowLeft, Star, FileText, Video } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Separator } from '@/components/ui/separator';
@@ -57,11 +57,21 @@ export const ItemDetail: React.FC = () => {
 
       <header className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 pb-6">
         <div>
-          <span className="bg-muted text-muted-foreground text-sm font-bold px-3 py-1 rounded inline-block mb-3">
+          <span className="bg-muted text-muted-foreground text-xl font-bold px-4 py-2 rounded inline-block mb-3">
             {item.category}
           </span>
           <h1 className="text-4xl font-extrabold text-primary mb-2">{item.title}</h1>
-          <p className="text-xl text-muted-foreground">Ano: <strong>{item.year}</strong> {item.competition && ` | Competição: ${item.competition}`}</p>
+          <p className="text-xl text-muted-foreground">
+            Ano: <strong>{item.year}</strong>
+            {item.competition && <span> | Competição: <strong>{item.competition}</strong></span>}
+          </p>
+          {(item.player || item.opponent) && (
+            <p className="text-xl text-muted-foreground mt-1">
+              {item.player && <span>Jogador: <strong>{item.player}</strong></span>}
+              {item.player && item.opponent && <span> | </span>}
+              {item.opponent && <span>Adversário: <strong>{item.opponent}</strong></span>}
+            </p>
+          )}
         </div>
 
         <Button
@@ -102,6 +112,22 @@ export const ItemDetail: React.FC = () => {
               <p className="text-xl">Imagem indisponível no arquivo mockado.</p>
             </div>
           )
+        ) : null}
+
+        {item.category === 'Vídeos' ? (
+          <figure className="flex flex-col items-center">
+            <div className="w-full max-w-3xl aspect-video bg-slate-900 rounded-lg border-2 shadow-sm flex flex-col items-center justify-center relative overflow-hidden group">
+              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors z-10" />
+              <Video className="w-24 h-24 text-white opacity-20 absolute z-0" aria-hidden="true" />
+              <div className="z-20 w-20 h-20 bg-primary/90 rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-transform">
+                <div className="w-0 h-0 border-t-[12px] border-t-transparent border-l-[20px] border-l-white border-b-[12px] border-b-transparent ml-2" />
+              </div>
+              <p className="z-20 mt-4 text-white/80 font-medium text-lg">Prévia do Player de Vídeo</p>
+            </div>
+            <figcaption className="mt-4 text-muted-foreground italic text-center">
+              Item de acervo em formato de vídeo: {item.title}.
+            </figcaption>
+          </figure>
         ) : null}
 
         {(item.category === 'Áudios' || item.category === 'Entrevistas') && (
