@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Search, Library, Home as HomeIcon } from 'lucide-react';
+import { BrazilFlag } from './BrazilFlag';
 
 export const Navigation: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -29,8 +30,8 @@ export const Navigation: React.FC<{ children: React.ReactNode }> = ({ children }
             className="text-2xl md:text-3xl font-bold flex items-center gap-2 hover:underline focus:ring-4 focus:ring-canarinho-branco focus:outline-none rounded p-1"
             aria-label="Memória Canarinho, Página Inicial"
           >
-            <img src={`${import.meta.env.BASE_URL}cbf-logo.png`} alt="Símbolo da CBF" className="w-10 h-auto" />
             <span>Memória Canarinho</span>
+            <BrazilFlag className="w-8 h-auto rounded" aria-hidden="true" />
           </Link>
 
           <nav aria-label="Navegação Principal">
