@@ -204,48 +204,38 @@ export const Catalog: React.FC = () => {
               <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 {paginatedItems.map(item => (
                   <li key={item.id} className="h-full">
-                  <Link
-                    to={`/catalog/${item.id}`}
-                    className="block group relative w-full aspect-[3/4] sm:aspect-[4/5] rounded-2xl overflow-hidden focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring bg-slate-900 shadow-lg hover:shadow-2xl hover:shadow-canarinho-verde/20 transition-all duration-500 border border-border"
-                    aria-label={`Visualizar item: ${item.title}`}
-                  >
-                    {item.imageUrl ? (
-                      <img src={item.imageUrl} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                    ) : (
-                      <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center text-white/5 bg-slate-900 transition-transform duration-700 group-hover:scale-110">
-                        <div className="[&>svg]:w-40 [&>svg]:h-40 mb-12">
-                          {getCategoryIcon(item.category)}
+                    <Link to={`/catalog/${item.id}`} className="block h-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring rounded-xl">
+                      <Card className="h-full flex flex-col overflow-hidden hover:border-canarinho-verde hover:shadow-lg transition-all group">
+                        <div className="bg-slate-100 h-56 relative flex items-center justify-center p-4">
+                          {item.imageUrl ? (
+                            <img src={item.imageUrl} alt="" className="object-contain w-full h-full transition-transform duration-500 group-hover:scale-105" />
+                          ) : (
+                            <div className="text-muted-foreground flex flex-col items-center">
+                              <div className="[&>svg]:w-12 [&>svg]:h-12 mb-2 text-slate-400">
+                                {getCategoryIcon(item.category)}
+                              </div>
+                              <span className="font-medium text-slate-500">{item.category}</span>
+                            </div>
+                          )}
+                          <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm text-slate-900 text-xs font-bold px-3 py-1.5 rounded shadow-sm border border-slate-200">
+                            {item.category}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                    
-                    {/* Gradient Overlay for Text Readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/10 opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-                    
-                    {/* Top Badge (Glassmorphism) */}
-                    <div className="absolute top-4 left-4 z-10 backdrop-blur-md bg-white/20 border border-white/30 text-white font-bold px-3 py-1.5 rounded-full text-xs flex items-center gap-2 shadow-sm">
-                      <span className="[&>svg]:w-4 [&>svg]:h-4">
-                        {getCategoryIcon(item.category)}
-                      </span>
-                      {item.category}
-                    </div>
-
-                    {/* Content Area */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 z-10 flex flex-col justify-end">
-                      <h3 className="text-2xl font-extrabold text-white leading-tight mb-2 line-clamp-3 shadow-black drop-shadow-md group-hover:text-canarinho-amarelo transition-colors duration-300">
-                        {item.title}
-                      </h3>
-                      
-                      {/* Slide-up details container */}
-                      <div className="grid grid-cols-1 gap-1.5 text-sm text-white/80 overflow-hidden max-h-0 opacity-0 group-hover:max-h-40 group-hover:opacity-100 group-hover:mt-2 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
-                        <p className="border-l-2 border-canarinho-verde pl-2 flex items-center">Ano: <strong className="text-white ml-1">{item.year}</strong></p>
-                        {item.competition && <p className="border-l-2 border-canarinho-amarelo pl-2 flex items-center">Competição: <strong className="text-white ml-1">{item.competition}</strong></p>}
-                        {item.player && <p className="border-l-2 border-canarinho-azul-claro pl-2 flex items-center line-clamp-1">Jogador: <strong className="text-white ml-1">{item.player}</strong></p>}
-                        {item.opponent && <p className="border-l-2 border-red-500 pl-2 flex items-center">Adversário: <strong className="text-white ml-1">{item.opponent}</strong></p>}
-                      </div>
-                    </div>
-                  </Link>
-                </li>
+                        <div className="p-5 flex-grow flex flex-col">
+                          <h3 className="text-xl font-bold text-slate-900 leading-tight mb-4 line-clamp-2 group-hover:text-canarinho-verde transition-colors">
+                            {item.title}
+                          </h3>
+                          
+                          <div className="mt-auto space-y-1.5 text-sm text-slate-600">
+                            <p>Ano: <strong className="text-slate-900">{item.year}</strong></p>
+                            {item.competition && <p>Competição: <strong className="text-slate-900">{item.competition}</strong></p>}
+                            {item.player && <p>Jogador: <strong className="text-slate-900">{item.player}</strong></p>}
+                            {item.opponent && <p>Adversário: <strong className="text-slate-900">{item.opponent}</strong></p>}
+                          </div>
+                        </div>
+                      </Card>
+                    </Link>
+                  </li>
               ))}
               </ul>
               

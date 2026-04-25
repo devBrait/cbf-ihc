@@ -25,7 +25,7 @@ export const mockItems: CollectionItem[] = [
     opponent: 'Itália',
     player: 'Pelé',
     description: 'Um dos momentos mais icônicos da história do futebol mundial: Pelé ergue a Taça Jules Rimet, consagrando o Brasil como o primeiro tricampeão mundial. A imagem captura a alegria contagiante do Rei do Futebol cercado por torcedores no gramado do Estádio Azteca, no México, simbolizando o ápice de uma era dourada para o esporte brasileiro.',
-    imageUrl: 'https://placehold.co/600x400/19AE47/FFFFFF?text=Pele+Taca+1970',
+    imageUrl: 'https://placehold.co/600x800/19AE47/FFFFFF?text=Pele+1970',
   },
   {
     id: '2',
@@ -68,7 +68,7 @@ export const mockItems: CollectionItem[] = [
     competition: 'Copa do Mundo',
     opponent: 'Suécia',
     description: 'O modelo 3D digitalizado da lendária camisa azul, improvisada e utilizada pela Seleção Brasileira na final de 1958 contra a Suécia. Segundo a lenda, o chefe da delegação Paulo Machado de Carvalho inspirou os jogadores dizendo que era o azul do manto de Nossa Senhora Aparecida, afastando o medo de não jogar com a tradicional Amarelinha.',
-    imageUrl: 'https://placehold.co/400x400/0C87D1/FFFFFF?text=Camisa+Azul+1958'
+    imageUrl: 'https://placehold.co/600x800/0C87D1/FFFFFF?text=Camisa+1958'
   },
   {
     id: '6',
@@ -90,7 +90,7 @@ export const mockItems: CollectionItem[] = [
     opponent: 'Alemanha',
     player: 'Ronaldo',
     description: 'A fotografia perfeita da redenção. Ronaldo comemora com seu famoso corte de cabelo "Cascão" um dos seus dois gols na grande final contra a Alemanha, em Yokohama. Após lesões gravíssimas, ele retornou ao topo do mundo para dar ao Brasil o pentacampeonato invicto.',
-    imageUrl: 'https://placehold.co/600x400/19AE47/FFFFFF?text=Ronaldo+2002'
+    imageUrl: 'https://placehold.co/600x800/19AE47/FFFFFF?text=Ronaldo+2002'
   },
   {
     id: '8',
@@ -101,7 +101,7 @@ export const mockItems: CollectionItem[] = [
     opponent: 'Alemanha',
     player: 'Neymar',
     description: 'O momento de maior catarse do Maracanã nas Olimpíadas do Rio. A imagem captura o instante em que Neymar, sob imensa pressão, cobra o pênalti decisivo contra a Alemanha. O gol encerrou a longa espera do futebol brasileiro pelo único título que lhe faltava: a medalha de Ouro Olímpica.',
-    imageUrl: 'https://placehold.co/600x400/FFD700/000000?text=Ouro+Olimpico+2016'
+    imageUrl: 'https://placehold.co/600x800/FFD700/000000?text=Ouro+2016'
   },
   {
     id: '9',
@@ -123,7 +123,7 @@ export const mockItems: CollectionItem[] = [
     competition: 'Olimpíadas',
     player: 'Marta',
     description: 'A jovem Marta, já demonstrando ser a futura Rainha do Futebol, conduzindo a Seleção Feminina em uma campanha maravilhosa que culminou na primeira medalha de Prata olímpica do Brasil em Atenas. Uma imagem que representa o início do boom do futebol feminino brasileiro no cenário mundial.',
-    imageUrl: 'https://placehold.co/600x400/193375/FFFFFF?text=Marta+Atenas+2004'
+    imageUrl: 'https://placehold.co/600x800/193375/FFFFFF?text=Marta+2004'
   },
   {
     id: '11',
@@ -145,7 +145,7 @@ export const mockItems: CollectionItem[] = [
     opponent: 'Uruguai',
     player: 'Romário',
     description: 'Esta imagem eterniza o exato segundo em que Romário cabeceia a bola para o fundo das redes do Uruguai, no Maracanã lotado. O gol garantiu o título da Copa América de 1989 e encerrou um jejum doloroso de 40 anos sem títulos importantes para o Brasil diante de sua torcida.',
-    imageUrl: 'https://placehold.co/600x400/19AE47/FFFFFF?text=Romario+Copa+America+1989'
+    imageUrl: 'https://placehold.co/600x800/19AE47/FFFFFF?text=Romario+1989'
   },
   {
     id: '13',
@@ -178,7 +178,7 @@ export const mockItems: CollectionItem[] = [
     opponent: 'Holanda',
     player: 'Bebeto',
     description: 'Nas quartas de final contra a Holanda, Bebeto marcou um gol antológico e correu para a lateral do campo simulando embalar um bebê, homenageando seu filho Mattheus recém-nascido. Imediatamente acompanhado por Romário e Mazinho, criaram a comemoração mais copiada do mundo naquele ano.',
-    imageUrl: 'https://placehold.co/600x400/0C87D1/FFFFFF?text=Bebeto+Embala+Nenem'
+    imageUrl: 'https://placehold.co/600x800/0C87D1/FFFFFF?text=Bebeto+1994'
   },
   {
     id: '16',
@@ -200,7 +200,7 @@ export const mockItems: CollectionItem[] = [
     opponent: 'Espanha',
     player: 'Malcom',
     description: 'O flash do gol do bicampeonato olímpico! Na prorrogação da tensa final contra a Espanha nos Jogos de Tóquio, o atacante Malcom ganha na velocidade da defesa espanhola e chuta cruzado para marcar o gol de ouro, selando a conquista da segunda medalha dourada consecutiva.',
-    imageUrl: 'https://placehold.co/600x400/FFD700/000000?text=Ouro+Olimpico+2020'
+    imageUrl: 'https://placehold.co/600x800/FFD700/000000?text=Ouro+2020'
   },
   {
     id: '18',
@@ -211,6 +211,6 @@ export const mockItems: CollectionItem[] = [
     opponent: 'Bolívia',
     player: 'Neymar',
     description: 'Momento histórico no Estádio Mangueirão em que Neymar marca duas vezes contra a Bolívia, chegando a 79 gols oficiais e ultrapassando a marca de Pelé (nas contas da FIFA), consagrando-se como o maior artilheiro da história da Seleção Brasileira Masculina.',
-    imageUrl: 'https://placehold.co/600x400/19AE47/FFFFFF?text=Neymar+Maior+Artilheiro'
+    imageUrl: 'https://placehold.co/600x800/19AE47/FFFFFF?text=Neymar+2023'
   }
 ];
