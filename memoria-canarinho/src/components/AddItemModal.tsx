@@ -29,6 +29,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({ isOpen, onClose, onI
   const [player, setPlayer] = useState('');
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [isReadingFile, setIsReadingFile] = useState(false);
   
   const categories: Category[] = ['Fotografias', 'Entrevistas', 'Documentos', 'Áudios', 'Objetos 3D', 'Vídeos'];
 
@@ -36,10 +37,16 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({ isOpen, onClose, onI
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
+      setIsReadingFile(true);
       const file = e.target.files[0];
       const reader = new FileReader();
       reader.onloadend = () => {
         setImageUrl(reader.result as string);
+        setIsReadingFile(false);
+      };
+      reader.onerror = () => {
+        setIsReadingFile(false);
+        toast.error('Erro ao ler a imagem.');
       };
       reader.readAsDataURL(file);
     }
@@ -58,7 +65,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({ isOpen, onClose, onI
       // If player or opponent is empty, don't include them so they aren't shown
       ...(player.trim() ? { player: player.trim() } : {}),
       ...(opponent.trim() ? { opponent: opponent.trim() } : {}),
-      imageUrl: imageUrl || `https://placehold.co/600x800/0C87D1/FFFFFF?text=${encodeURIComponent(title || 'Item')}`,
+      imageUrl: imageUrl || `https://placehold.co/600x800/0C87D1/FFFFFF?text=Imagem`,
       ...(user?.email ? { creatorEmail: user.email } : {})
     };
 
@@ -107,7 +114,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({ isOpen, onClose, onI
             
             <div className="space-y-2">
               <Label htmlFor="add-year" className="font-bold">{t('add.year')} *</Label>
-              <Input id="add-year" value={year} onChange={e => setYear(e.target.value)} placeholder="Ex: 2002" required />
+              <Input id="add-year" value={year} onChange={e => setYear(e.target.value)} required />
             </div>
 
             <div className="space-y-2">
@@ -146,7 +153,8 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({ isOpen, onClose, onI
                 <span className="text-sm font-medium text-slate-700">Selecionar Arquivo</span>
                 <input id="add-file" type="file" className="hidden" accept="image/*,audio/*,video/*" onChange={handleFileChange} />
               </label>
-              {imageUrl && <span className="text-sm text-green-600 font-medium">Arquivo selecionado!</span>}
+              {isReadingFile && <span className="text-sm text-slate-500 font-medium">Carregando imagem...</span>}
+              {!isReadingFile && imageUrl && <span className="text-sm text-green-600 font-medium">Arquivo selecionado!</span>}
             </div>
           </div>
 
@@ -156,8 +164,8 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({ isOpen, onClose, onI
           <Button type="button" variant="outline" onClick={onClose} className="font-bold">
             {t('add.cancel')}
           </Button>
-          <Button type="submit" onClick={handleSubmit} className="bg-canarinho-verde hover:bg-canarinho-verde/90 text-white font-bold">
-            {t('add.save')}
+          <Button type="submit" disabled={isReadingFile} onClick={handleSubmit} className="bg-canarinho-verde hover:bg-canarinho-verde/90 text-white font-bold">
+            {isReadingFile ? 'Processando...' : t('add.save')}
           </Button>
         </div>
       </div>

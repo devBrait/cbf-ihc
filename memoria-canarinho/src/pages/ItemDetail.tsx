@@ -25,19 +25,19 @@ const MarketplaceZoom = ({ src, alt, t }: { src: string, alt: string, t: any }) 
 
   return (
     <figure className="flex flex-col items-center">
-      <div 
+      <div
         className="relative w-full max-w-2xl mx-auto overflow-hidden bg-white border-2 rounded shadow-sm cursor-crosshair group"
         onMouseEnter={() => setIsZooming(true)}
         onMouseLeave={() => setIsZooming(false)}
         onMouseMove={handleMouseMove}
       >
-        <img 
-          src={src} 
-          alt={alt} 
+        <img
+          src={src}
+          alt={alt}
           className={`w-full h-auto object-contain transition-opacity duration-200 ${isZooming ? 'opacity-0' : 'opacity-100'}`}
         />
-        
-        <div 
+
+        <div
           className={`absolute inset-0 bg-no-repeat pointer-events-none transition-opacity duration-200 ${isZooming ? 'opacity-100' : 'opacity-0'}`}
           style={{
             backgroundImage: `url(${src})`,
@@ -45,7 +45,7 @@ const MarketplaceZoom = ({ src, alt, t }: { src: string, alt: string, t: any }) 
             backgroundSize: '250%',
           }}
         />
-        
+
         {!isZooming && (
           <div className="absolute bottom-4 right-4 bg-white/90 p-3 rounded-full shadow-lg pointer-events-none flex items-center justify-center">
             <Search className="w-6 h-6 text-slate-700" />
@@ -66,7 +66,7 @@ export const ItemDetail: React.FC = () => {
   const { user } = useAuth();
   const { t, language } = useTranslation();
   const mockItems = getMockItems(language);
-  
+
   const [isShareMenuOpen, setIsShareMenuOpen] = useState(false);
 
   React.useEffect(() => {
@@ -77,7 +77,7 @@ export const ItemDetail: React.FC = () => {
 
   const relatedItems = useMemo(() => {
     if (!item) return [];
-    
+
     const scoredItems = mockItems
       .filter(i => i.id !== item.id)
       .map(i => {
@@ -89,7 +89,7 @@ export const ItemDetail: React.FC = () => {
         if (i.category === item.category) score += 1;
         return { item: i, score };
       });
-      
+
     return scoredItems
       .filter(si => si.score > 0)
       .sort((a, b) => b.score - a.score)
@@ -210,8 +210,8 @@ export const ItemDetail: React.FC = () => {
             {isFav ? t('item.savedToCollection') : t('item.addToCollection')}
           </Button>
 
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             variant="default"
             onClick={() => setIsShareMenuOpen(!isShareMenuOpen)}
             className="font-bold text-lg bg-canarinho-verde hover:bg-green-700 text-white shadow-sm"
@@ -221,11 +221,10 @@ export const ItemDetail: React.FC = () => {
           </Button>
 
           {item.creatorEmail === user?.email && (
-            <Button 
-              size="lg" 
-              variant="destructive"
+            <Button
+              size="lg"
               onClick={handleDeleteItem}
-              className="font-bold text-lg shadow-sm"
+              className="font-bold text-lg shadow-sm bg-red-600 hover:bg-red-700 text-white border-0"
             >
               <Trash2 className="w-5 h-5 mr-2" />
               Deletar Item
@@ -295,7 +294,7 @@ export const ItemDetail: React.FC = () => {
           <AudioPlayer title={item.title} transcription={item.transcription || ''} />
         )}
       </section>
-      
+
       {relatedItems.length > 0 && (
         <section className="mt-16 pt-12 border-t border-slate-200">
           <h2 className="text-3xl font-bold text-slate-900 mb-8">{t('item.related')}</h2>
@@ -318,7 +317,7 @@ export const ItemDetail: React.FC = () => {
                       <h3 className="text-lg font-bold text-slate-900 leading-tight mb-4 line-clamp-2 group-hover:text-canarinho-verde transition-colors">
                         {related.title}
                       </h3>
-                      
+
                       <div className="mt-4 space-y-1.5 text-xs text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-100">
                         <p>{t('catalog.year')}: <strong className="text-slate-900">{related.year}</strong></p>
                         {related.competition && <p>{t('catalog.competition')}: <strong className="text-slate-900">{related.competition}</strong></p>}

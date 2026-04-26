@@ -83,7 +83,7 @@ export const Navigation: React.FC<{ children: React.ReactNode }> = ({ children }
                   <span className="uppercase font-bold text-sm">{language}</span>
                 </button>
                 {isLangOpen && (
-                  <div className="absolute right-0 top-full mt-1 w-24 bg-white rounded-lg shadow-lg border border-slate-200 overflow-hidden text-slate-800 origin-top-right z-50">
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-24 bg-white rounded-lg shadow-lg border border-slate-200 overflow-hidden text-slate-800 origin-top z-50">
                     <button onClick={() => { setLanguage('pt'); setIsLangOpen(false); }} className="w-full text-left px-3 py-2 hover:bg-slate-50 font-bold text-xs">PT-BR</button>
                     <button onClick={() => { setLanguage('en'); setIsLangOpen(false); }} className="w-full text-left px-3 py-2 hover:bg-slate-50 font-bold text-xs">EN-US</button>
                     <button onClick={() => { setLanguage('es'); setIsLangOpen(false); }} className="w-full text-left px-3 py-2 hover:bg-slate-50 font-bold text-xs">ES-ES</button>
@@ -105,7 +105,7 @@ export const Navigation: React.FC<{ children: React.ReactNode }> = ({ children }
                   </button>
 
                   {isProfileOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden text-slate-800 origin-top-right z-50">
+                    <div className="absolute right-0 md:right-auto md:left-0 top-full mt-2 w-40 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden text-slate-800 origin-top-left z-50">
                       <div className="p-3 bg-slate-50 border-b border-slate-100 text-sm">
                         <p className="font-bold truncate">{user.name}</p>
                         <p className="text-slate-500 text-xs truncate">{user.email}</p>

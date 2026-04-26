@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { hashPassword } from '../utils/crypto';
+import React, { createContext, useContext, useState } from 'react';
+import type { ReactNode } from 'react';
 import { toast } from 'sonner';
 
 export interface User {
@@ -20,14 +20,12 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
+  const [user, setUser] = useState<User | null>(() => {
     const storedUser = localStorage.getItem('cbf_session');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
+  // No need for useEffect since we initialize synchronously
 
   const login = (email: string, passwordHash: string) => {
     const users: User[] = JSON.parse(localStorage.getItem('cbf_users') || '[]');

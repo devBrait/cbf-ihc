@@ -16,8 +16,6 @@ export interface CollectionItem {
   creatorEmail?: string;
 }
 
-
-
 const mockItemsPT: CollectionItem[] = [
   {
     id: '1',
@@ -249,6 +247,14 @@ export const translateItemToEN = (item: CollectionItem): CollectionItem => {
     description = 'Richarlison\'s great goal against Serbia';
   }
 
+  if (item.id.startsWith('collab-')) {
+    if (description.includes('Pelé marca um gol contra a Argentina em plena Copa do Mundo de 1970')) {
+      description = 'Pelé scores a goal against Argentina right in the middle of the 1970 World Cup.';
+    } else if (description.includes('Pelé marca um golaço contra a Argentina em plena Copa do Mundo de 1970')) {
+      description = 'Pelé scores a great goal against Argentina right in the middle of the 1970 World Cup.';
+    }
+  }
+
   const enItem = { ...item, competition, opponent, title, description };
 
   if (item.id === '1') return { ...enItem, title: 'Pelé Lifts the Jules Rimet Trophy', description: 'One of the most iconic moments in world football history: Pelé lifts the Jules Rimet Trophy, consecrating Brazil as the first three-time world champion. The image captures the contagious joy of the King of Football surrounded by fans on the pitch of the Azteca Stadium in Mexico.' };
@@ -297,6 +303,14 @@ export const translateItemToES = (item: CollectionItem): CollectionItem => {
   }
   if (description === 'Golaço de Richarlison contra a servia') {
     description = 'Gran gol de Richarlison contra Serbia';
+  }
+
+  if (item.id.startsWith('collab-')) {
+    if (description.includes('Pelé marca um gol contra a Argentina em plena Copa do Mundo de 1970')) {
+      description = 'Pelé marca un gol contra Argentina en plena Copa del Mundo de 1970.';
+    } else if (description.includes('Pelé marca um golaço contra a Argentina em plena Copa do Mundo de 1970')) {
+      description = 'Pelé marca un gran gol contra Argentina en plena Copa del Mundo de 1970.';
+    }
   }
 
   const esItem = { ...item, competition, opponent, title, description };
