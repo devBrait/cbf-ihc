@@ -16,6 +16,8 @@ export const Navigation: React.FC<{ children: React.ReactNode }> = ({ children }
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setIsLangOpen(false);
+    setIsProfileOpen(false);
   }, [location.pathname]);
 
   const getLinkClasses = (path: string) => {
@@ -96,7 +98,13 @@ export const Navigation: React.FC<{ children: React.ReactNode }> = ({ children }
 
               <div className="relative w-full md:w-auto flex justify-center">
                 <button
-                  onClick={() => setIsLangOpen(!isLangOpen)}
+                  onClick={() => {
+                    setIsLangOpen((prev) => {
+                      const next = !prev;
+                      if (next) setIsProfileOpen(false);
+                      return next;
+                    });
+                  }}
                   className="flex items-center justify-center gap-2 text-white hover:bg-white/10 px-4 py-2.5 rounded-full transition-colors focus:ring-4 focus:ring-canarinho-amarelo focus:outline-none w-full md:w-auto"
                   title="Mudar Idioma / Change Language"
                 >
@@ -115,7 +123,13 @@ export const Navigation: React.FC<{ children: React.ReactNode }> = ({ children }
               {user ? (
                 <div className="relative w-full md:w-auto flex justify-center">
                   <button
-                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    onClick={() => {
+                      setIsProfileOpen((prev) => {
+                        const next = !prev;
+                        if (next) setIsLangOpen(false);
+                        return next;
+                      });
+                    }}
                     className="flex items-center gap-2.5 text-white hover:bg-white/10 p-1.5 pr-4 rounded-full transition-colors outline-none focus:ring-2 focus:ring-white/50 w-full md:w-auto justify-center"
                     aria-expanded={isProfileOpen}
                     aria-label="Menu do Usuário"
@@ -127,7 +141,7 @@ export const Navigation: React.FC<{ children: React.ReactNode }> = ({ children }
                   </button>
 
                   {isProfileOpen && (
-                    <div className="absolute top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden text-slate-800 z-50 md:right-0">
+                    <div className="absolute top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden text-slate-800 z-50 md:-right-2">
                       <div className="p-4 bg-slate-50/50 border-b border-slate-100">
                         <p className="font-semibold text-sm truncate text-slate-900">{user.name}</p>
                         <p className="text-slate-500 text-xs truncate mt-0.5">{user.email}</p>

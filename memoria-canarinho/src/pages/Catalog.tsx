@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { Search, ChevronDown, ChevronUp, Image as ImageIcon, FileText, Video, Headphones, Box, LayoutGrid, Mic, Filter } from 'lucide-react';
 import { getMockItems } from '../data/mockData';
 import type { Category } from '../data/mockData';
@@ -12,6 +12,8 @@ import { useTranslation } from '../context/I18nContext';
 export const Catalog: React.FC = () => {
   const { t, language } = useTranslation();
   const mockItems = getMockItems(language);
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [isAdvancedSearchOpen, setIsAdvancedSearchOpen] = useState(false);
@@ -21,11 +23,12 @@ export const Catalog: React.FC = () => {
   const [competitionFilter, setCompetitionFilter] = useState('');
   const [playerFilter, setPlayerFilter] = useState('');
   const [opponentFilter, setOpponentFilter] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
+  const pageFromUrl = Number(searchParams.get('page'));
+  const currentPage = Number.isInteger(pageFromUrl) && pageFromUrl > 0 ? pageFromUrl : 1;
 
   const ITEMS_PER_PAGE = 12;
 
-  const categories = ['Todas', 'Fotografias', 'Entrevistas', 'Documentos', 'Áudios', 'Objetos 3D', 'Vídeos'];
+  const categories: Array<Category | 'Todas'> = ['Todas', 'Fotografias', 'Entrevistas', 'Documentos', 'Áudios', 'Objetos 3D', 'Vídeos'];
 
   const filteredItems = mockItems.filter(item => {
     const matchesCategory = selectedCategory === 'Todas' || item.category === selectedCategory;
@@ -39,11 +42,21 @@ export const Catalog: React.FC = () => {
     return matchesCategory && matchesSearch && matchesYear && matchesCompetition && matchesPlayer && matchesOpponent;
   });
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, selectedCategory, yearFilter, competitionFilter, playerFilter, opponentFilter]);
+  const updatePage = (nextPage: number) => {
+    const safePage = Math.max(1, nextPage);
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      if (safePage === 1) {
+        next.delete('page');
+      } else {
+        next.set('page', String(safePage));
+      }
+      return next;
+    });
+  };
 
   const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
+
   const paginatedItems = filteredItems.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const getCategoryIcon = (category: string) => {
@@ -69,7 +82,10 @@ export const Catalog: React.FC = () => {
               <li key={cat}>
                 <Button
                   variant={selectedCategory === cat ? "default" : "ghost"}
-                  onClick={() => setSelectedCategory(cat as any)}
+                  onClick={() => {
+                    setSelectedCategory(cat);
+                    updatePage(1);
+                  }}
                   className={`w-full justify-start text-lg h-auto py-3 px-4 flex items-center gap-3`}
                   aria-pressed={selectedCategory === cat}
                 >
@@ -100,7 +116,10 @@ export const Catalog: React.FC = () => {
                     id="search-simple"
                     type="text"
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                      updatePage(1);
+                    }}
                     className="pl-12 py-6 text-lg"
                     placeholder={t('catalog.searchPlaceholder')}
                   />
@@ -129,7 +148,10 @@ export const Catalog: React.FC = () => {
                     id="filter-year"
                     type="text"
                     value={yearFilter}
-                    onChange={(e) => setYearFilter(e.target.value)}
+                    onChange={(e) => {
+                      setYearFilter(e.target.value);
+                      updatePage(1);
+                    }}
                     className="py-6 text-lg"
                     placeholder={t('catalog.yearPlaceholder')}
                   />
@@ -140,7 +162,10 @@ export const Catalog: React.FC = () => {
                     id="filter-comp"
                     type="text"
                     value={competitionFilter}
-                    onChange={(e) => setCompetitionFilter(e.target.value)}
+                    onChange={(e) => {
+                      setCompetitionFilter(e.target.value);
+                      updatePage(1);
+                    }}
                     className="py-6 text-lg"
                     placeholder={t('catalog.compPlaceholder')}
                   />
@@ -153,7 +178,7 @@ export const Catalog: React.FC = () => {
                     value={playerFilter}
                     onChange={(e) => {
                       setPlayerFilter(e.target.value);
-                      setCurrentPage(1);
+                      updatePage(1);
                     }}
                     className="py-6 text-lg"
                     placeholder={t('catalog.playerPlaceholder')}
@@ -167,7 +192,7 @@ export const Catalog: React.FC = () => {
                     value={opponentFilter}
                     onChange={(e) => {
                       setOpponentFilter(e.target.value);
-                      setCurrentPage(1);
+                      updatePage(1);
                     }}
                     className="py-6 text-lg"
                     placeholder={t('catalog.oppPlaceholder')}
@@ -188,7 +213,14 @@ export const Catalog: React.FC = () => {
               <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 {paginatedItems.map(item => (
                   <li key={item.id} className="h-full">
-                    <Link to={`/catalog/${item.id}`} className="block h-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring rounded-xl">
+                    <Link
+                      to={`/catalog/${item.id}`}
+                      state={{
+                        fromCatalogPath: `${location.pathname}${currentPage > 1 ? `?page=${currentPage}` : ''}`,
+                        fromCatalogPage: currentPage,
+                      }}
+                      className="block h-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring rounded-xl"
+                    >
                       <Card className="h-full flex flex-col overflow-hidden hover:border-canarinho-verde hover:shadow-lg transition-all group">
                         <div className="bg-slate-100 h-56 relative flex items-center justify-center p-4">
                           {item.imageUrl ? (
@@ -227,7 +259,7 @@ export const Catalog: React.FC = () => {
                 <div className="flex justify-center items-center mt-12 gap-6">
                   <Button
                     variant="outline"
-                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    onClick={() => updatePage(currentPage - 1)}
                     disabled={currentPage === 1}
                     aria-label="Página Anterior"
                     className="font-bold border-2 px-6 text-slate-700 border-slate-300 hover:bg-canarinho-verde hover:text-white hover:border-canarinho-verde disabled:opacity-40 disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200 transition-all"
@@ -239,7 +271,7 @@ export const Catalog: React.FC = () => {
                   </span>
                   <Button
                     variant="outline"
-                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                    onClick={() => updatePage(currentPage + 1)}
                     disabled={currentPage === totalPages}
                     aria-label="Próxima Página"
                     className="font-bold border-2 px-6 text-slate-700 border-slate-300 hover:bg-canarinho-verde hover:text-white hover:border-canarinho-verde disabled:opacity-40 disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200 transition-all"

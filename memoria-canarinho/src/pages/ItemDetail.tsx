@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useCollection } from '../context/CollectionContext';
 import { useAuth } from '../context/AuthContext';
 import { getMockItems, deleteCollaborativeItem } from '../data/mockData';
@@ -63,6 +63,7 @@ const MarketplaceZoom = ({ src, alt, t }: { src: string, alt: string, t: any }) 
 export const ItemDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isFavorite, toggleFavorite } = useCollection();
   const { user } = useAuth();
   const { t, language } = useTranslation();
@@ -70,6 +71,10 @@ export const ItemDetail: React.FC = () => {
 
   const [isShareMenuOpen, setIsShareMenuOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  const locationState = (location.state as { fromCatalogPath?: unknown; fromCatalogPage?: unknown } | null);
+  const fromCatalogPath = typeof locationState?.fromCatalogPath === 'string' ? locationState.fromCatalogPath : null;
+  const fromCatalogPage = typeof locationState?.fromCatalogPage === 'number' ? locationState.fromCatalogPage : null;
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -176,7 +181,17 @@ export const ItemDetail: React.FC = () => {
     <article className="max-w-4xl mx-auto space-y-6 pb-12">
       <div className="mb-2">
         <Button
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            if (fromCatalogPath) {
+              navigate(fromCatalogPath);
+              return;
+            }
+            if (fromCatalogPage && fromCatalogPage > 1) {
+              navigate(`/catalog?page=${fromCatalogPage}`);
+              return;
+            }
+            navigate(-1);
+          }}
           className="flex items-center gap-2 text-slate-600 bg-white border border-slate-200 shadow-sm hover:shadow hover:bg-slate-50 hover:text-canarinho-verde font-bold rounded-full px-5 transition-all w-fit"
           aria-label="Voltar para a página anterior"
         >
