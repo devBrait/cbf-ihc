@@ -6,13 +6,14 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { LogIn } from 'lucide-react';
+import { LogIn, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTranslation } from '../context/I18nContext';
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -47,30 +48,42 @@ export const Login: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="email" className="font-bold text-slate-700">{t('auth.email')}</Label>
-            <Input 
-              id="email" 
-              type="email" 
-              required 
+            <Input
+              id="email"
+              type="email"
+              placeholder={t('auth.emailPlaceholder')}
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-12 border-slate-300"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="password" className="font-bold text-slate-700">{t('auth.password')}</Label>
-            <Input 
-              id="password" 
-              type="password" 
-              required 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="h-12 border-slate-300"
+              className="h-12 border-slate-300 placeholder:text-slate-400/70"
             />
           </div>
 
-          <Button 
-            type="submit" 
+          <div className="space-y-2">
+            <Label htmlFor="password" className="font-bold text-slate-700">{t('auth.password')}</Label>
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder={t('auth.passwordPlaceholder')}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="h-12 border-slate-300 placeholder:text-slate-400/70 pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none"
+                aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+
+          <Button
+            type="submit"
             className="w-full h-12 text-lg font-bold bg-canarinho-azul-escuro hover:bg-canarinho-azul-escuro/90 transition-colors text-white"
             disabled={isLoading}
           >

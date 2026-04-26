@@ -346,10 +346,20 @@ export const addCollaborativeItem = (item: CollectionItem) => {
 };
 
 export const deleteCollaborativeItem = (id: string) => {
-  const existing = localStorage.getItem('collaborative_items');
-  const items: CollectionItem[] = existing ? JSON.parse(existing) : [];
-  const newItems = items.filter(i => i.id !== id);
-  localStorage.setItem('collaborative_items', JSON.stringify(newItems));
+  if (id.startsWith('collab-')) {
+    const existing = localStorage.getItem('collaborative_items');
+    const items: CollectionItem[] = existing ? JSON.parse(existing) : [];
+    const newItems = items.filter(i => i.id !== id);
+    localStorage.setItem('collaborative_items', JSON.stringify(newItems));
+  } else {
+    // Delete hardcoded mock item
+    const existing = localStorage.getItem('deleted_mock_items');
+    const deletedList: string[] = existing ? JSON.parse(existing) : [];
+    if (!deletedList.includes(id)) {
+      deletedList.push(id);
+      localStorage.setItem('deleted_mock_items', JSON.stringify(deletedList));
+    }
+  }
 };
 
 const getCollaborativeItems = (): CollectionItem[] => {
@@ -359,10 +369,19 @@ const getCollaborativeItems = (): CollectionItem[] => {
 
 export const getMockItems = (lang: string): CollectionItem[] => {
   const collabItems = getCollaborativeItems();
+  const deletedStr = localStorage.getItem('deleted_mock_items');
+  const deletedList: string[] = deletedStr ? JSON.parse(deletedStr) : [];
   
-  if (lang === 'en') return [...mockItemsEN, ...collabItems.map(translateItemToEN)];
-  if (lang === 'es') return [...mockItemsES, ...collabItems.map(translateItemToES)];
-  return [...mockItemsPT, ...collabItems];
+  let baseItems = [];
+  if (lang === 'en') baseItems = mockItemsEN;
+  else if (lang === 'es') baseItems = mockItemsES;
+  else baseItems = mockItemsPT;
+  
+  baseItems = baseItems.filter(item => !deletedList.includes(item.id));
+  
+  if (lang === 'en') return [...baseItems, ...collabItems.map(translateItemToEN)];
+  if (lang === 'es') return [...baseItems, ...collabItems.map(translateItemToES)];
+  return [...baseItems, ...collabItems];
 };
 
 // Export original for places that don't need translation strictly, but everything should use getMockItems

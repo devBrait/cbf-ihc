@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { User as UserIcon, Lock } from 'lucide-react';
+import { User as UserIcon, Lock, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTranslation } from '../context/I18nContext';
 
@@ -20,6 +20,9 @@ export const Profile: React.FC = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Se acessar a rota sem logar, redireciona
   React.useEffect(() => {
@@ -34,12 +37,12 @@ export const Profile: React.FC = () => {
     e.preventDefault();
 
     if (newPassword !== confirmNewPassword) {
-      toast.error('Erro', { description: 'As senhas não coincidem.' });
+      toast.error('Erro', { description: t('auth.errPwdNoMatch') });
       return;
     }
 
     if (newPassword.length < 6) {
-      toast.error('Senha fraca', { description: 'A nova senha deve ter pelo menos 6 caracteres.' });
+      toast.error('Senha fraca', { description: t('auth.errPwdWeak') });
       return;
     }
 
@@ -50,20 +53,20 @@ export const Profile: React.FC = () => {
       
       // Verifica se a senha atual está correta (comparando com a do usuário logado)
       if (currentHashed !== user.passwordHash) {
-        toast.error('Senha atual incorreta', { description: 'Verifique sua senha e tente novamente.' });
+        toast.error('Erro', { description: t('auth.errPwdCurrent') });
         setIsLoading(false);
         return;
       }
 
       const newHashed = await hashPassword(newPassword);
       updatePassword(newHashed);
-      toast.success('Sucesso', { description: 'Senha alterada com sucesso.' });
+      toast.success('Sucesso', { description: t('auth.pwdSuccess') });
       
       setCurrentPassword('');
       setNewPassword('');
       setConfirmNewPassword('');
     } catch (err: any) {
-      toast.error('Erro', { description: 'Ocorreu um erro inesperado.' });
+      toast.error('Erro', { description: t('auth.errGeneric') });
     } finally {
       setIsLoading(false);
     }
@@ -106,42 +109,72 @@ export const Profile: React.FC = () => {
           <form onSubmit={handlePasswordChange} className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="currentPassword">{t('auth.currentPassword')}</Label>
-              <Input 
-                id="currentPassword" 
-                type="password" 
-                required 
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-              />
+              <div className="relative">
+                <Input 
+                  id="currentPassword" 
+                  type={showCurrentPassword ? "text" : "password"} 
+                  required 
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  className="absolute right-3 top-[50%] -translate-y-[50%] text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  {showCurrentPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-2">
                 <Label htmlFor="newPassword">{t('auth.newPassword')}</Label>
-                <Input 
-                  id="newPassword" 
-                  type="password" 
-                  required 
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
+                <div className="relative">
+                  <Input 
+                    id="newPassword" 
+                    type={showNewPassword ? "text" : "password"} 
+                    required 
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    className="absolute right-3 top-[50%] -translate-y-[50%] text-slate-400 hover:text-slate-600 transition-colors"
+                  >
+                    {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
               </div>
               
               <div className="space-y-2">
                 <Label htmlFor="confirmNewPassword">{t('auth.confirmPassword')}</Label>
-                <Input 
-                  id="confirmNewPassword" 
-                  type="password" 
-                  required 
-                  value={confirmNewPassword}
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
-                />
+                <div className="relative">
+                  <Input 
+                    id="confirmNewPassword" 
+                    type={showConfirmPassword ? "text" : "password"} 
+                    required 
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-[50%] -translate-y-[50%] text-slate-400 hover:text-slate-600 transition-colors"
+                  >
+                    {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
               </div>
             </div>
 
             <Button 
               type="submit" 
-              className="mt-4"
+              className="mt-6 w-full sm:w-auto h-11 px-8 font-bold bg-canarinho-azul-escuro hover:bg-canarinho-azul-escuro/90 text-white transition-colors disabled:bg-slate-200 disabled:text-slate-400 disabled:opacity-100 shadow-sm"
               disabled={isLoading || !currentPassword || !newPassword || !confirmNewPassword}
             >
               {isLoading ? t('auth.loading') : t('auth.savePassword')}

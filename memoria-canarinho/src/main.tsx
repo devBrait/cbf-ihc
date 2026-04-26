@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <AuthProvider>
           <CollectionProvider>
             <App />
-            <Toaster position="bottom-right" duration={2500} />
+            <Toaster position="top-right" duration={2500} />
           </CollectionProvider>
         </AuthProvider>
       </HashRouter>

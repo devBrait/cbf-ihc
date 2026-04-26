@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCollection } from '../context/CollectionContext';
 import { useAuth } from '../context/AuthContext';
@@ -68,6 +69,7 @@ export const ItemDetail: React.FC = () => {
   const mockItems = getMockItems(language);
 
   const [isShareMenuOpen, setIsShareMenuOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -113,11 +115,22 @@ export const ItemDetail: React.FC = () => {
   const handleFavoriteClick = () => {
     if (!user) {
       toast.warning(t('auth.restricted'), {
-        description: t('auth.restrictedSave'),
-        action: {
-          label: t('auth.loginBtn'),
-          onClick: () => navigate('/login'),
-        },
+        description: (
+          <div className="flex flex-col w-full gap-3 mt-1">
+            <span className="text-sm font-medium text-slate-600 block">
+              {t('auth.restrictedSave')}
+            </span>
+            <button
+              onClick={() => {
+                toast.dismiss();
+                navigate('/login');
+              }}
+              className="w-full mt-2 bg-canarinho-verde text-white font-bold py-2.5 px-4 rounded-lg hover:bg-green-700 transition-all shadow-sm active:scale-95"
+            >
+              {t('auth.loginBtn')}
+            </button>
+          </div>
+        ),
       });
       return;
     }
@@ -152,26 +165,23 @@ export const ItemDetail: React.FC = () => {
     setIsShareMenuOpen(false);
   };
 
-  const handleDeleteItem = () => {
-    if (window.confirm("Tem certeza que deseja deletar este item do acervo?")) {
-      deleteCollaborativeItem(item.id);
-      if (isFav) toggleFavorite(item);
-      toast.success("Item deletado com sucesso!");
-      navigate('/catalog');
-    }
+  const confirmDelete = () => {
+    deleteCollaborativeItem(item.id);
+    if (isFav) toggleFavorite(item);
+    toast.success(t('item.deleteSuccess'));
+    navigate('/catalog');
   };
 
   return (
     <article className="max-w-4xl mx-auto space-y-6 pb-12">
-      <div>
+      <div className="mb-2">
         <Button
-          variant="ghost"
           onClick={() => navigate(-1)}
-          className="text-primary font-bold text-lg hover:text-primary/80 hover:bg-transparent px-0"
+          className="flex items-center gap-2 text-slate-600 bg-white border border-slate-200 shadow-sm hover:shadow hover:bg-slate-50 hover:text-canarinho-verde font-bold rounded-full px-5 transition-all w-fit"
           aria-label="Voltar para a página anterior"
         >
-          <ArrowLeft aria-hidden="true" className="mr-2 h-5 w-5" />
-          {t('item.back')}
+          <ArrowLeft aria-hidden="true" className="h-5 w-5" />
+          <span>{t('item.back')}</span>
         </Button>
       </div>
 
@@ -220,14 +230,14 @@ export const ItemDetail: React.FC = () => {
             {t('item.share')}
           </Button>
 
-          {item.creatorEmail === user?.email && (
+          {user && (
             <Button
               size="lg"
-              onClick={handleDeleteItem}
+              onClick={() => setIsDeleteDialogOpen(true)}
               className="font-bold text-lg shadow-sm bg-red-600 hover:bg-red-700 text-white border-0"
             >
               <Trash2 className="w-5 h-5 mr-2" />
-              Deletar Item
+              {t('item.deleteBtn')}
             </Button>
           )}
 
@@ -334,6 +344,38 @@ export const ItemDetail: React.FC = () => {
 
       {isShareMenuOpen && (
         <div className="fixed inset-0 z-40" onClick={() => setIsShareMenuOpen(false)} />
+      )}
+
+      {isDeleteDialogOpen && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 outline-none">
+          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-sm outline-none focus:outline-none" role="dialog" aria-modal="true" tabIndex={-1}>
+            <div className="p-6">
+              <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
+                <Trash2 className="w-6 h-6 text-red-600" />
+              </div>
+              <h2 className="text-xl font-bold text-center text-slate-900 mb-2">{t('item.deleteConfirmTitle')}</h2>
+              <p className="text-center text-slate-600 mb-6">
+                {t('item.deleteConfirmDesc').replace('{0}', item.title)}
+              </p>
+              <div className="flex flex-col gap-3">
+                <Button 
+                  onClick={confirmDelete}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold h-11"
+                >
+                  {t('item.deleteConfirmYes')}
+                </Button>
+                <Button 
+                  onClick={() => setIsDeleteDialogOpen(false)}
+                  variant="outline"
+                  className="w-full border-2 border-slate-200 text-slate-700 hover:bg-slate-50 font-bold h-11"
+                >
+                  {t('item.deleteConfirmNo')}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
       )}
     </article>
   );

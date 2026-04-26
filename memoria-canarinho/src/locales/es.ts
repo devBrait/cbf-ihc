@@ -122,5 +122,22 @@ export const es = {
   "add.upload": "Subir Imagen/Archivo",
   "add.save": "Guardar Artículo",
   "add.cancel": "Cancelar",
-  "add.success": "¡Artículo añadido con éxito a tu colección y al catálogo público!"
+  "add.success": "¡Artículo añadido con éxito a tu colección y al catálogo público!",
+  "item.deleteBtn": "Eliminar Artículo",
+  "item.deleteConfirmTitle": "¿Eliminar este artículo?",
+  "item.deleteConfirmDesc": "¿Estás seguro de que deseas eliminar permanentemente {0}? Esta acción no se puede deshacer.",
+  "item.deleteConfirmYes": "Sí, Eliminar",
+  "item.deleteConfirmNo": "Cancelar",
+  "item.deleteSuccess": "Artículo eliminado con éxito.",
+  "auth.errPwdNoMatch": "Las contraseñas no coinciden.",
+  "auth.errPwdWeak": "La nueva contraseña debe tener al menos 6 caracteres.",
+  "auth.errPwdCurrent": "Contraseña actual incorrecta.",
+  "auth.errCheckPwd": "Verifica tu contraseña e inténtalo de nuevo.",
+  "auth.pwdSuccess": "Contraseña cambiada con éxito.",
+  "auth.errGeneric": "Ocurrió un error inesperado.",
+  "auth.emailPlaceholder": "Ej: juan@email.com",
+  "auth.passwordPlaceholder": "Ingresa tu contraseña",
+  "auth.namePlaceholder": "Ingresa tu nombre completo",
+  "auth.newPasswordPlaceholder": "Crea una contraseña (mín. 6 caracteres)",
+  "auth.confirmPasswordPlaceholder": "Verifica la contraseña elegida"
 };

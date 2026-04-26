@@ -6,7 +6,7 @@ export const pt = {
   "nav.login": "Entrar ou Criar Conta",
   "nav.profile": "Meu Perfil",
   "nav.logout": "Sair",
-  
+
   // Home
   "home.welcome": "Bem-vindo ao Memória Canarinho",
   "home.subtitle": "O museu virtual do acervo histórico da Seleção Brasileira de Futebol. Explore fotos, vídeos, áudios e objetos de forma acessível para todos.",
@@ -35,7 +35,7 @@ export const pt = {
   "catalog.searchTitle": "Busca Simples (Título ou Descrição)",
   "catalog.searchPlaceholder": "Digite para buscar...",
   "catalog.showAdvanced": "Mostrar Busca Avançada",
-  "catalog.hideAdvanced": "Ocultar Busca Avanzada",
+  "catalog.hideAdvanced": "Ocultar Busca Avançada",
   "catalog.year": "Ano",
   "catalog.competition": "Competição",
   "catalog.player": "Jogador",
@@ -62,7 +62,7 @@ export const pt = {
   "item.share": "Compartilhar",
   "item.shareVia": "Compartilhar item via...",
   "item.copyLink": "Copiar Link",
-  
+
   // Collection
   "collection.title": "Minha Coleção",
   "collection.sharedTitle": "Coleção Compartilhada",
@@ -121,5 +121,22 @@ export const pt = {
   "add.upload": "Upload de Imagem/Arquivo",
   "add.save": "Salvar Item",
   "add.cancel": "Cancelar",
-  "add.success": "Item adicionado com sucesso à sua coleção e ao acervo público!"
+  "add.success": "Item adicionado com sucesso à sua coleção e ao acervo público!",
+  "item.deleteBtn": "Deletar Item",
+  "item.deleteConfirmTitle": "Excluir este item?",
+  "item.deleteConfirmDesc": "Tem certeza que deseja deletar permanentemente o item {0}? Esta ação não pode ser desfeita.",
+  "item.deleteConfirmYes": "Sim, Excluir Item",
+  "item.deleteConfirmNo": "Cancelar",
+  "item.deleteSuccess": "Item deletado com sucesso.",
+  "auth.errPwdNoMatch": "As senhas não coincidem.",
+  "auth.errPwdWeak": "A nova senha deve ter pelo menos 6 caracteres.",
+  "auth.errPwdCurrent": "Senha atual incorreta.",
+  "auth.errCheckPwd": "Verifique sua senha e tente novamente.",
+  "auth.pwdSuccess": "Senha alterada com sucesso.",
+  "auth.errGeneric": "Ocorreu um erro inesperado.",
+  "auth.emailPlaceholder": "Ex: joao@email.com",
+  "auth.passwordPlaceholder": "Digite sua senha",
+  "auth.namePlaceholder": "Digite seu nome completo",
+  "auth.newPasswordPlaceholder": "Crie uma senha (min. 6 caracteres)",
+  "auth.confirmPasswordPlaceholder": "Confirme a senha escolhida"
 };

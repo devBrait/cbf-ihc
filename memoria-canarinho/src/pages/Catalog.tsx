@@ -250,11 +250,11 @@ export const Catalog: React.FC = () => {
                     onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
                     aria-label="Página Anterior"
-                    className="font-bold border-2"
+                    className="font-bold border-2 px-6 text-slate-700 border-slate-300 hover:bg-canarinho-verde hover:text-white hover:border-canarinho-verde disabled:opacity-40 disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200 transition-all"
                   >
                     {t('catalog.previous')}
                   </Button>
-                  <span className="text-lg font-bold" aria-live="polite">
+                  <span className="text-lg font-bold text-slate-700" aria-live="polite">
                     {t('catalog.pageOf', currentPage.toString(), totalPages.toString())}
                   </span>
                   <Button
@@ -262,7 +262,7 @@ export const Catalog: React.FC = () => {
                     onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                     disabled={currentPage === totalPages}
                     aria-label="Próxima Página"
-                    className="font-bold border-2"
+                    className="font-bold border-2 px-6 text-slate-700 border-slate-300 hover:bg-canarinho-verde hover:text-white hover:border-canarinho-verde disabled:opacity-40 disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200 transition-all"
                   >
                     {t('catalog.next')}
                   </Button>

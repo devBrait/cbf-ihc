@@ -122,5 +122,22 @@ export const en = {
   "add.upload": "Upload Image/File",
   "add.save": "Save Item",
   "add.cancel": "Cancel",
-  "add.success": "Item successfully added to your collection and the public catalog!"
+  "add.success": "Item successfully added to your collection and the public catalog!",
+  "item.deleteBtn": "Delete Item",
+  "item.deleteConfirmTitle": "Delete this item?",
+  "item.deleteConfirmDesc": "Are you sure you want to permanently delete {0}? This action cannot be undone.",
+  "item.deleteConfirmYes": "Yes, Delete Item",
+  "item.deleteConfirmNo": "Cancel",
+  "item.deleteSuccess": "Item successfully deleted.",
+  "auth.errPwdNoMatch": "Passwords do not match.",
+  "auth.errPwdWeak": "New password must be at least 6 characters.",
+  "auth.errPwdCurrent": "Incorrect current password.",
+  "auth.errCheckPwd": "Check your password and try again.",
+  "auth.pwdSuccess": "Password successfully changed.",
+  "auth.errGeneric": "An unexpected error occurred.",
+  "auth.emailPlaceholder": "E.g. john@email.com",
+  "auth.passwordPlaceholder": "Enter your password",
+  "auth.namePlaceholder": "Enter your full name",
+  "auth.newPasswordPlaceholder": "Create a password (min. 6 chars)",
+  "auth.confirmPasswordPlaceholder": "Confirm the chosen password"
 };
