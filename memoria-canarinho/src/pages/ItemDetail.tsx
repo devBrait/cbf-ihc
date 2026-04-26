@@ -358,13 +358,13 @@ export const ItemDetail: React.FC = () => {
                 {t('item.deleteConfirmDesc').replace('{0}', item.title)}
               </p>
               <div className="flex flex-col gap-3">
-                <Button 
+                <Button
                   onClick={confirmDelete}
                   className="w-full bg-red-600 hover:bg-red-700 text-white font-bold h-11"
                 >
                   {t('item.deleteConfirmYes')}
                 </Button>
-                <Button 
+                <Button
                   onClick={() => setIsDeleteDialogOpen(false)}
                   variant="outline"
                   className="w-full border-2 border-slate-200 text-slate-700 hover:bg-slate-50 font-bold h-11"

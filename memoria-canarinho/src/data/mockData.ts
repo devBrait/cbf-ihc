@@ -7,7 +7,6 @@ export interface CollectionItem {
   year: string;
   competition?: string;
   opponent?: string;
-  player?: string;
   description: string;
   imageUrl?: string;
   audioUrl?: string;
@@ -35,9 +34,8 @@ const mockItemsPT: CollectionItem[] = [
     year: '1970',
     competition: 'Copa do Mundo',
     opponent: 'Itália',
-    player: 'Carlos Alberto Torres',
-    description: 'Ouça a emocionante e clássica narração do último gol da final de 1970. A jogada, que envolveu quase todo o time brasileiro, é considerada por muitos como o maior gol da história das Copas do Mundo. O chute fulminante do capitão Carlos Alberto (o "Capita") selou a vitória por 4 a 1 sobre a Itália.',
-    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    description: 'A clássica narração do último gol da final de 1970.',
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', // Placeholder
     transcription: 'E lá vai o Brasil... Tocou para Jairzinho... Pelé... Esperou a passagem do Carlos Alberto. Bateu cruzado! Goooool do Brasil! Um golaço! Carlos Alberto Torres é o nome dele!'
   },
   {
@@ -47,7 +45,7 @@ const mockItemsPT: CollectionItem[] = [
     year: '1950',
     competition: 'Copa do Mundo',
     opponent: 'Uruguai',
-    description: 'Este é o documento oficial e original da súmula da final da Copa do Mundo de 1950, um registro histórico do evento que ficou conhecido como "Maracanazo". O documento exibe as escalações e as anotações do árbitro, servindo como uma testemunha silenciosa de uma das tardes mais impactantes da história esportiva do Brasil.',
+    description: 'Documento original da súmula da final do fatídico Maracanazo.',
     imageUrl: 'https://placehold.co/600x800/eeeeee/193375?text=Sumula+1950',
   },
   {
@@ -56,10 +54,9 @@ const mockItemsPT: CollectionItem[] = [
     category: 'Entrevistas',
     year: '1994',
     competition: 'Copa do Mundo',
-    player: 'Zagallo',
-    description: 'Entrevista exclusiva e histórica com Zagallo, concedida nos dias que antecederam a grande final da Copa de 1994. Com sua habitual paixão e superstição ("Vocês vão ter que me engolir!"), o Velho Lobo transmite confiança na conquista do inédito tetracampeonato após 24 anos de espera.',
-    videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
-    transcription: 'Nós estamos preparados. O Brasil tem uma equipe forte, consistente e vamos buscar esse título com toda a garra. A torcida pode acreditar!'
+    description: 'Entrevista pré-jogo onde Zagallo mostra confiança no tetra.',
+    videoUrl: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', // Placeholder video
+    transcription: 'Nós estamos preparados. O Brasil tem uma equipe forte, consistente e vamos buscar esse título com toda a garra.'
   },
   {
     id: '5',
@@ -286,7 +283,7 @@ export const translateItemToES = (item: CollectionItem): CollectionItem => {
   if (competition === 'Copa do Mundo') competition = 'Copa del Mundo';
   else if (competition === 'Olimpíadas') competition = 'Juegos Olímpicos';
   else if (competition === 'Copa das Confederações') competition = 'Copa Confederaciones';
-  
+
   let opponent = item.opponent;
   if (opponent === 'Itália') opponent = 'Italia';
   else if (opponent === 'Suécia') opponent = 'Suecia';
@@ -371,14 +368,14 @@ export const getMockItems = (lang: string): CollectionItem[] => {
   const collabItems = getCollaborativeItems();
   const deletedStr = localStorage.getItem('deleted_mock_items');
   const deletedList: string[] = deletedStr ? JSON.parse(deletedStr) : [];
-  
+
   let baseItems = [];
   if (lang === 'en') baseItems = mockItemsEN;
   else if (lang === 'es') baseItems = mockItemsES;
   else baseItems = mockItemsPT;
-  
+
   baseItems = baseItems.filter(item => !deletedList.includes(item.id));
-  
+
   if (lang === 'en') return [...baseItems, ...collabItems.map(translateItemToEN)];
   if (lang === 'es') return [...baseItems, ...collabItems.map(translateItemToES)];
   return [...baseItems, ...collabItems];

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Search, ChevronDown, ChevronUp, Image as ImageIcon, FileText, Video, Headphones, Box, LayoutGrid, Mic, Filter } from 'lucide-react';
 import { getMockItems } from '../data/mockData';
 import type { Category } from '../data/mockData';
@@ -19,23 +19,6 @@ export const Catalog: React.FC = () => {
 
   const [yearFilter, setYearFilter] = useState('');
   const [competitionFilter, setCompetitionFilter] = useState('');
-  const [playerFilter, setPlayerFilter] = useState('');
-  const [opponentFilter, setOpponentFilter] = useState('');
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  const pageParam = parseInt(searchParams.get('page') || '1', 10);
-  const initialPage = isNaN(pageParam) || pageParam < 1 ? 1 : pageParam;
-  const [currentPage, setCurrentPage] = useState(initialPage);
-
-  useEffect(() => {
-    setSearchParams(prev => {
-      const p = new URLSearchParams(prev);
-      p.set('page', currentPage.toString());
-      return p;
-    }, { replace: true });
-  }, [currentPage, setSearchParams]);
-
-  const ITEMS_PER_PAGE = 6;
 
   const categories = ['Todas', 'Fotografias', 'Entrevistas', 'Documentos', 'Áudios', 'Objetos 3D', 'Vídeos'];
 
@@ -45,14 +28,9 @@ export const Catalog: React.FC = () => {
       item.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesYear = yearFilter === '' || item.year === yearFilter;
     const matchesCompetition = competitionFilter === '' || item.competition?.toLowerCase().includes(competitionFilter.toLowerCase());
-    const matchesPlayer = playerFilter === '' || item.player?.toLowerCase().includes(playerFilter.toLowerCase());
-    const matchesOpponent = opponentFilter === '' || item.opponent?.toLowerCase().includes(opponentFilter.toLowerCase());
 
-    return matchesCategory && matchesSearch && matchesYear && matchesCompetition && matchesPlayer && matchesOpponent;
+    return matchesCategory && matchesSearch && matchesYear && matchesCompetition;
   });
-
-  const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
-  const paginatedItems = filteredItems.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
@@ -77,10 +55,7 @@ export const Catalog: React.FC = () => {
               <li key={cat}>
                 <Button
                   variant={selectedCategory === cat ? "default" : "ghost"}
-                  onClick={() => {
-                    setSelectedCategory(cat as any);
-                    setCurrentPage(1);
-                  }}
+                  onClick={() => setSelectedCategory(cat as any)}
                   className={`w-full justify-start text-lg h-auto py-3 px-4 flex items-center gap-3`}
                   aria-pressed={selectedCategory === cat}
                 >
@@ -111,10 +86,7 @@ export const Catalog: React.FC = () => {
                     id="search-simple"
                     type="text"
                     value={searchTerm}
-                    onChange={(e) => {
-                      setSearchTerm(e.target.value);
-                      setCurrentPage(1);
-                    }}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-12 py-6 text-lg"
                     placeholder={t('catalog.searchPlaceholder')}
                   />
@@ -136,17 +108,14 @@ export const Catalog: React.FC = () => {
             </Button>
 
             {isAdvancedSearchOpen && (
-              <div id="advanced-search-panel" className="bg-muted p-6 rounded-md border mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div id="advanced-search-panel" className="bg-muted p-6 rounded-md border mt-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="filter-year" className="text-lg font-bold">{t('catalog.year')}</Label>
                   <Input
                     id="filter-year"
                     type="text"
                     value={yearFilter}
-                    onChange={(e) => {
-                      setYearFilter(e.target.value);
-                      setCurrentPage(1);
-                    }}
+                    onChange={(e) => setYearFilter(e.target.value)}
                     className="py-6 text-lg"
                     placeholder={t('catalog.yearPlaceholder')}
                   />
@@ -157,10 +126,7 @@ export const Catalog: React.FC = () => {
                     id="filter-comp"
                     type="text"
                     value={competitionFilter}
-                    onChange={(e) => {
-                      setCompetitionFilter(e.target.value);
-                      setCurrentPage(1);
-                    }}
+                    onChange={(e) => setCompetitionFilter(e.target.value)}
                     className="py-6 text-lg"
                     placeholder={t('catalog.compPlaceholder')}
                   />
@@ -229,7 +195,7 @@ export const Catalog: React.FC = () => {
                           <h3 className="text-xl font-bold text-slate-900 leading-tight mb-4 line-clamp-2 group-hover:text-canarinho-verde transition-colors">
                             {item.title}
                           </h3>
-                          
+
                           <div className="mt-4 space-y-1.5 text-sm text-slate-600">
                             <p>{t('catalog.year')}: <strong className="text-slate-900">{item.year}</strong></p>
                             {item.competition && <p>{t('catalog.competition')}: <strong className="text-slate-900">{item.competition}</strong></p>}
@@ -240,9 +206,9 @@ export const Catalog: React.FC = () => {
                       </Card>
                     </Link>
                   </li>
-              ))}
+                ))}
               </ul>
-              
+
               {totalPages > 1 && (
                 <div className="flex justify-center items-center mt-12 gap-6">
                   <Button
