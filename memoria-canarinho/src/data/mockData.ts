@@ -7,6 +7,7 @@ export interface CollectionItem {
   year: string;
   competition?: string;
   opponent?: string;
+  player?: string;
   description: string;
   imageUrl?: string;
   audioUrl?: string;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ChevronDown, ChevronUp, Image as ImageIcon, FileText, Video, Headphones, Box, LayoutGrid, Mic, Filter } from 'lucide-react';
 import { getMockItems } from '../data/mockData';
@@ -19,6 +19,11 @@ export const Catalog: React.FC = () => {
 
   const [yearFilter, setYearFilter] = useState('');
   const [competitionFilter, setCompetitionFilter] = useState('');
+  const [playerFilter, setPlayerFilter] = useState('');
+  const [opponentFilter, setOpponentFilter] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const ITEMS_PER_PAGE = 12;
 
   const categories = ['Todas', 'Fotografias', 'Entrevistas', 'Documentos', 'Áudios', 'Objetos 3D', 'Vídeos'];
 
@@ -28,9 +33,18 @@ export const Catalog: React.FC = () => {
       item.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesYear = yearFilter === '' || item.year === yearFilter;
     const matchesCompetition = competitionFilter === '' || item.competition?.toLowerCase().includes(competitionFilter.toLowerCase());
+    const matchesPlayer = playerFilter === '' || item.player?.toLowerCase().includes(playerFilter.toLowerCase());
+    const matchesOpponent = opponentFilter === '' || item.opponent?.toLowerCase().includes(opponentFilter.toLowerCase());
 
-    return matchesCategory && matchesSearch && matchesYear && matchesCompetition;
+    return matchesCategory && matchesSearch && matchesYear && matchesCompetition && matchesPlayer && matchesOpponent;
   });
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory, yearFilter, competitionFilter, playerFilter, opponentFilter]);
+
+  const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
+  const paginatedItems = filteredItems.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
