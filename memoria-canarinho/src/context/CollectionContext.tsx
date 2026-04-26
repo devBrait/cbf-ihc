@@ -11,15 +11,22 @@ interface CollectionContextType {
 const CollectionContext = createContext<CollectionContextType | undefined>(undefined);
 
 export const CollectionProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [favorites, setFavorites] = useState<CollectionItem[]>([]);
+  const [favorites, setFavorites] = useState<CollectionItem[]>(() => {
+    const saved = localStorage.getItem('cbf_favorites');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const toggleFavorite = (item: CollectionItem) => {
     setFavorites(prev => {
       const exists = prev.find(fav => fav.id === item.id);
+      let newFavs;
       if (exists) {
-        return prev.filter(fav => fav.id !== item.id);
+        newFavs = prev.filter(fav => fav.id !== item.id);
+      } else {
+        newFavs = [...prev, item];
       }
-      return [...prev, item];
+      localStorage.setItem('cbf_favorites', JSON.stringify(newFavs));
+      return newFavs;
     });
   };
 

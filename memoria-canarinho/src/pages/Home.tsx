@@ -3,16 +3,19 @@ import { Link } from 'react-router-dom';
 import { Search, Star, Accessibility, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
+import { useTranslation } from '../context/I18nContext';
 
 export const Home: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col items-center">
       <section className="text-center w-full max-w-4xl pt-8 pb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-6 leading-tight">
-          Bem-vindo ao Memória Canarinho
+          {t('home.welcome')}
         </h1>
         <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto">
-          O museu virtual do acervo histórico da Seleção Brasileira de Futebol. Explore fotos, vídeos, áudios e objetos de forma acessível para todos.
+          {t('home.subtitle')}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -24,7 +27,7 @@ export const Home: React.FC = () => {
           >
             <Link to="/catalog">
               <Search className="w-8 h-8" aria-hidden="true" />
-              Explorar Acervo
+              {t('catalog.title')}
             </Link>
           </Button>
 
@@ -36,7 +39,7 @@ export const Home: React.FC = () => {
           >
             <Link to="/collection">
               <Star className="w-8 h-8 text-canarinho-amarelo" aria-hidden="true" />
-              Minha Coleção
+              {t('nav.collection')}
             </Link>
           </Button>
         </div>
@@ -44,7 +47,7 @@ export const Home: React.FC = () => {
 
       <section className="w-full max-w-5xl mt-8 pt-10 border-t-2 border-border" aria-labelledby="features-heading">
         <h2 id="features-heading" className="text-3xl font-bold text-center mb-10">
-          Por que usar o Memória Canarinho?
+          {t('home.why')}
         </h2>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -53,10 +56,10 @@ export const Home: React.FC = () => {
               <div className="bg-canarinho-amarelo p-4 rounded-full mx-auto" aria-hidden="true">
                 <Search className="w-10 h-10 text-canarinho-azul-escuro" />
               </div>
-              <CardTitle className="text-xl mt-4">Busca Facilitada</CardTitle>
+              <CardTitle className="text-xl mt-4">{t('home.search')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground text-lg">Encontre arquivos históricos usando filtros avançados e navegação simples.</p>
+              <p className="text-muted-foreground text-lg">{t('home.searchDesc')}</p>
             </CardContent>
           </Card>
 
@@ -65,10 +68,10 @@ export const Home: React.FC = () => {
               <div className="bg-canarinho-amarelo p-4 rounded-full mx-auto" aria-hidden="true">
                 <Accessibility className="w-10 h-10 text-canarinho-azul-escuro" />
               </div>
-              <CardTitle className="text-xl mt-4">Acessibilidade</CardTitle>
+              <CardTitle className="text-xl mt-4">{t('home.accessibility')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground text-lg">Suporte a leitores de tela, botões grandes e transcrições para conteúdo de áudio.</p>
+              <p className="text-muted-foreground text-lg">{t('home.accessibilityDesc')}</p>
             </CardContent>
           </Card>
 
@@ -77,10 +80,10 @@ export const Home: React.FC = () => {
               <div className="bg-canarinho-amarelo p-4 rounded-full mx-auto" aria-hidden="true">
                 <ShieldCheck className="w-10 h-10 text-canarinho-azul-escuro" />
               </div>
-              <CardTitle className="text-xl mt-4">Preservação</CardTitle>
+              <CardTitle className="text-xl mt-4">{t('home.preservation')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground text-lg">Patrimônio histórico protegido e disponível digitalmente para todos os torcedores.</p>
+              <p className="text-muted-foreground text-lg">{t('home.preservationDesc')}</p>
             </CardContent>
           </Card>
         </div>
